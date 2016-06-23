@@ -1,0 +1,7 @@
+# Example configuration values for sysconfig script
+deploy_pubkey=""
+deploy_user="jenkins"
+hostname="template"
+domain="chthonios"
+tld="net"
+newuser="exampleUserName"

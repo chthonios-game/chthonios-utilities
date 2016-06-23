@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Modifications to template VM for server
+
+# Configuration values
+PUBKEY="ssh-rsa <deploy_pubkey> <deploy_user>@<hostname>.<domain>.<tld>"
+USERNAME="<newuser>"
+
+# Check if a user has access to the SUDO command
+ISSUDOTEST=$(sudo -v 2>&1)
+if [ ! -z "$ISSUDOTEST" ];then
+    echo "This script must be run as a user with sudo permissions"
+    exit 1
+fi
+
+
+NEWHOME="/home/$NEWUSER/"
+
+sudo adduser $NEWUSER
+
+
+sudo mkdir -p $NEWHOME.ssh
+sudo sh -c "echo '$DEPLOYPUBKEY' > $NEWHOME.ssh/authorized_keys"
+chown -R $NEWUSER:$NEWUSER $NEWHOME.ssh
+chmod 700 $NEWHOME.ssh
+chmod 600 $NEWHOME.ssh/authorized_keys
+
