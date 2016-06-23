@@ -10,11 +10,12 @@
 ### END INIT INFO
 
 ### BEGIN CONFIGURATION VALUES
-# values from configuration, do not change
+RUNASUSER="<run_user>"
 ### END CONFIGURATION VALUES
 
 
 SCRIPTNAME=`basename $0`
+BASEDIRECTORY="/home/$RUNASUSER/$SCRIPTNAME"
 
 PIDFILE="/var/run/chthonios/$SCRIPTNAME.pid"
 LOGFILE="/var/log/chthonios/$SCRIPTNAME.log"
