@@ -2,5 +2,12 @@
 
 # Creates init scripts for each configuration
 
-INITEMPLATE="./initscript.template"
-CONFIGTEMPLATE="./initscript.example"
+INITEMPLATE="./sysvinit.template"
+
+
+CONFIGS=(`ls ./ | grep '.cfg'`)
+
+for CONFIG in "${CONFIGS[@]}"
+do
+  echo $CONFIG
+done
