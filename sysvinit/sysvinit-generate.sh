@@ -2,7 +2,7 @@
 
 # Creates init scripts for each configuration
 
-INITEMPLATE="./sysvinit.template"
+TEMPLATE="./sysvinit.template"
 
 
 CONFIGS=(`ls ./ | grep '.cfg'`)
@@ -10,4 +10,6 @@ CONFIGS=(`ls ./ | grep '.cfg'`)
 for CONFIG in "${CONFIGS[@]}"
 do
   echo $CONFIG
+  #cp $TEMPLATE $CONFIG
+  
 done
