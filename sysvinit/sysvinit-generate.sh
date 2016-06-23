@@ -9,7 +9,9 @@ CONFIGS=(`ls ./ | grep '.cfg'`)
 
 for CONFIG in "${CONFIGS[@]}"
 do
-  echo $CONFIG
-  #cp $TEMPLATE $CONFIG
-  
+  SCRIPTNAME="sysvinit-`echo $CONFIG | cut -d. -f1`.sh"
+  cp $TEMPLATE $SCRIPTNAME
+  chmod u+x $SCRIPTNAME
+  source ./$CONFIG
+  sed -i "s/run_as_user/$run_as_user/g" $SCRIPTNAME
 done

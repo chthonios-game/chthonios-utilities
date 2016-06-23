@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 ### BEGIN CONFIGURATION VALUES
-RUNASUSER="<run_user>"
+RUNASUSER="run_as_user"
 ### END CONFIGURATION VALUES
 
 
@@ -21,7 +21,7 @@ PIDFILE="/var/run/chthonios/$SCRIPTNAME.pid"
 LOGFILE="/var/log/chthonios/$SCRIPTNAME.log"
 ERRORLOG="/var/log/chthonios/$SCRIPTNAME.err"
 
-function usage {
+usage () {
   echo "Usage: $0 COMMAND"
   echo
   echo "Available commands:"
@@ -34,11 +34,11 @@ function usage {
   echo
 }
 
-function getPID {
+getPID () {
     cat "$PIDFILE"
 }
 
-function isRunning {
+isRunning () {
     [ -f "$PIDFILE" ] && ps `getPID` > /dev/null 2>&1
 }
 
