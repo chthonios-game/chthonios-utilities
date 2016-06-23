@@ -1,8 +1,14 @@
 ## Chthonios Utilities
 
-#### sysvinit/initscript.template
-The initscript template is boilerplate for the chthonios startup/status/shutdown script.
+#### sysvinit/sysvinit.template
+Boilerplate for the chthonios services startup/status/shutdown scripts.
 
-#### sysvinit/configuration.example
-Example config for the initscript.
+#### sysvinit/sysvinit.example
+Example config for the sysvinit script.
+
+#### sysconfig/sysconfig.template
+Boilerplate for changes to template system for each individual server.
+
+#### sysconfig/sysconfig.example
+Example config for the sysconfig script.
 
