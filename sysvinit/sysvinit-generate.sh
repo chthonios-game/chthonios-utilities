@@ -5,13 +5,13 @@
 TEMPLATE="./sysvinit.template"
 
 
-CONFIGS=(`ls ./ | grep '.cfg'`)
+CONFIGS=(`ls ./config | grep '.cfg'`)
 
 for CONFIG in "${CONFIGS[@]}"
 do
   SCRIPTNAME="sysvinit-`echo $CONFIG | cut -d. -f1`.sh"
   cp $TEMPLATE $SCRIPTNAME
   chmod u+x $SCRIPTNAME
-  source ./$CONFIG
+  source ./config/$CONFIG
   sed -i "s/run_as_user/$run_as_user/g" $SCRIPTNAME
 done
