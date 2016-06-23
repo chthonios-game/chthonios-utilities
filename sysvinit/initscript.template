@@ -1,0 +1,113 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:           chthonios-authenticator
+# Required-Start:     $remote_fs $syslog
+# Required-Stop:      $remote_fs $syslog
+# Default-Start:      2 3 4 5
+# Default-Stop:       0 1 6
+# Short-Description:  Manages daemon for Chthonios authentication service
+# Description:        Background Enable service provided by daemon.
+### END INIT INFO
+
+### BEGIN CONFIGURATION VALUES
+# values from configuration, do not change
+### END CONFIGURATION VALUES
+
+
+SCRIPTNAME=`basename $0`
+
+PIDFILE="/var/run/chthonios/$SCRIPTNAME.pid"
+LOGFILE="/var/log/chthonios/$SCRIPTNAME.log"
+ERRORLOG="/var/log/chthonios/$SCRIPTNAME.err"
+
+function usage {
+  echo "Usage: $0 COMMAND"
+  echo
+  echo "Available commands:"
+  echo -e "   start \t\t Starts the service as $RUNASUSER"
+  echo -e "   stop \t\t Stops the service if it's currently running"
+  echo -e "   restart \t\t Stops the service if it's running, then starts it again as $RUNASUSER"
+  echo -e "   status \t\t Displays basic info about the service"
+  echo
+  echo -e "   <empty> \t\t Displays this message"
+  echo
+}
+
+function getPID {
+    cat "$PIDFILE"
+}
+
+function isRunning {
+    [ -f "$PIDFILE" ] && ps `getPID` > /dev/null 2>&1
+}
+
+case "$1" in
+    start)
+        if isRunning; then
+            echo "Service already running as PID '`getPID`'"
+        else
+            echo "Starting $SCRIPTNAME..."
+            cd "$BASEDIRECTORY"
+            if [ -z "$RUNASUSER" ]; then
+                sudo $cmd >> "$LOGFILE" 2>> "$ERRORLOG" &
+            else
+                sudo -u "$RUNASUSER" $cmd >> "$LOGFILE" 2>> "$ERRORLOG" &
+            fi
+            echo $! > "$PIDFILE"
+            if ! isRunning; then
+                echo "Unable to start, see $LOGFILE and $ERRORLOG"
+                exit 1
+            fi
+        fi
+        ;;
+    stop)
+      if isRunning; then
+          echo -n "Stopping $SCRIPTNAME.."
+          kill `getPID`
+          for i in {1..10}
+          do
+              if ! isRunning; then
+                  break
+              fi
+
+              echo -n "."
+              sleep 1
+          done
+          echo
+
+          if isRunning; then
+              echo "Not stopped; may still be shutting down or shutdown may have failed"
+              exit 1
+          else
+              echo "Stopped"
+              if [ -f "$PIDFILE" ]; then
+                  rm "$PIDFILE"
+              fi
+          fi
+      else
+          echo "Not running"
+      fi
+      ;;
+    restart)
+      $0 stop
+      if isRunning; then
+          echo "Unable to stop, will not attempt to start"
+          exit 1
+      fi
+      $0 start
+      ;;
+    status)
+      if isRunning; then
+          echo "Running"
+      else
+          echo "Stopped"
+          exit 1
+      fi
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+esac
+
+exit 0
