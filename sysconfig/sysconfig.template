@@ -3,8 +3,8 @@
 # Modifications to template VM for server
 
 # Configuration values
-PUBKEY="ssh-rsa <deploy_pubkey> <deploy_user>@<hostname>.<domain>.<tld>"
-USERNAME="<newuser>"
+v="ssh-rsa deploy_pubkey deploy_user@hostname.domain.tld"
+USERNAME="newuser"
 
 # Check if a user has access to the SUDO command
 ISSUDOTEST=$(sudo -v 2>&1)
@@ -14,14 +14,14 @@ if [ ! -z "$ISSUDOTEST" ];then
 fi
 
 
-NEWHOME="/home/$NEWUSER/"
+NEWHOME="/home/$USERNAME/"
 
-sudo adduser $NEWUSER
+sudo adduser $USERNAME
 
 
 sudo mkdir -p $NEWHOME.ssh
-sudo sh -c "echo '$DEPLOYPUBKEY' > $NEWHOME.ssh/authorized_keys"
-chown -R $NEWUSER:$NEWUSER $NEWHOME.ssh
+sudo sh -c "echo '$PUBKEY' > $NEWHOME.ssh/authorized_keys"
+chown -R $USERNAME:$USERNAME $NEWHOME.ssh
 chmod 700 $NEWHOME.ssh
 chmod 600 $NEWHOME.ssh/authorized_keys
 
