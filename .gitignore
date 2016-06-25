@@ -1,0 +1,4 @@
+# Ignore generated files
+sysconfig/*-sysconfig.sh
+sysvinit/*-sysvinit.sh
+
